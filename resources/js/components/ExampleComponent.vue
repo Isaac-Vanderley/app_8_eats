@@ -15,13 +15,14 @@
                 <nav arial-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                     <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                     <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
-                    <li class="breadcrumb-item"><a>Inicio</a></li>
+                    <li class="breadcrumb-item"><router-view name="/">Inicio</router-view> </li>
                     <li class="breadcrumb-item activate" aria-current="page">Negocios</li>
                     </ol>
                 </nav>
                 </div>
                 <div class="col-lg-6 col-5 text-right">
                 <button type="button" class="btn btn-sm btn-neutral" id="NuevoNegocio" @click="nuevoNegocio()">Nuevo Negocio</button>
+                <a href="/reporte"><button type="button" class="btn btn-sm btn-neutral" >Generar Reporte</button></a>
                 </div>
             </div>
             </div>
@@ -146,6 +147,8 @@
   </div>
 </div>
 
+<button type="button" class="btn btn-primary" @click="generarReporte">Generar </button>
+
 </div>
 </template>
 
@@ -167,6 +170,13 @@ import VuePaginate from 'vue-paginate';
             }
         },
         methods: {
+          tabla(){
+            this.$nextTick(() =>{
+              $('#default').DataTable();
+          });
+          },
+
+          
             guardarNegocio(){
 
               if(this.editando_negocio){
@@ -241,7 +251,10 @@ import VuePaginate from 'vue-paginate';
               this.editando_negocio = false
               this.negocio={}
               $('#exampleModal').modal('toggle');
-            }
+            },
+        generarReporte(){
+           get('/reporte')
+        }
 
         }
     }

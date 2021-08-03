@@ -14,14 +14,15 @@
                 <h6 class="h2 text-white d-inline-block mb-0">Alimentos</h6>
                 <nav arial-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                     <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                    <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
-                    <li class="breadcrumb-item"><a>Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/#"><i class="fas fa-home"></i></a></li>
+                    <li class="breadcrumb-item">Inicio</li>
                     <li class="breadcrumb-item activate" aria-current="page">Alimentos</li>
                     </ol>
                 </nav>
                 </div>
                 <div class="col-lg-6 col-5 text-right">
                 <button type="button" class="btn btn-sm btn-neutral" id="NuevoAlimento" @click="nuevoAlimento()">Nuevo Alimento</button>
+                
 
                 </div>
             </div>
@@ -74,7 +75,7 @@
 
 
 
-<!-- Modal -->
+<!-- Modal Editar -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -95,45 +96,49 @@
           <div class="form-group">
             <img :src="'/storage/'+ alimento.ruta_archivo" height="500px">
           </div>
-        <!--Tabla Alimentos-->
+        <!--Formulario-->
        <form>
           <div class="form-group">
-            <input type="file" class="form-control" @change="getArchivo">
+            <input type="file" class="form-control" @change="geteArchivo">
           </div>
 
           <div class="form-group">
             <a :href="'descargar_archivo/' + alimento.id" id="verarchivo" target="verarchivo">Ver Archivo</a>
           </div>
 
-
+  <div class="col-md-6">
+      <div class="form-group">
+        <input type="text" class="form-control" v-model="alimento.id" id="nombre_a" placeholder="Nombre del Alimento">
+      </div>
+    </div>
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" v-model="alimento.nombre_a" id="nombre_a" placeholder="Nombre del Alimento">
+        <input type="text" class="form-control" v-model="alimento.nombre_a" id="enombre_a" placeholder="Nombre del Alimento">
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" v-model="alimento.descripcion" id="descripcion" placeholder="Descripción del Alimento">
+        <input type="text" class="form-control" v-model="alimento.descripcion" id="edescripcion" placeholder="Descripción del Alimento">
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" v-model="alimento.precio" id="precio" placeholder="Precio">
+        <input type="text" class="form-control" v-model="alimento.precio" id="eprecio" placeholder="Precio">
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" v-model="alimento.tipo" id="tipo" placeholder="Tipo">
+        <input type="text" class="form-control" v-model="alimento.tipo" id="etipo" placeholder="Tipo">
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" v-model="alimento.cantidad" id="cantidad" placeholder="Cantidad">
+        <input type="text" class="form-control" v-model="alimento.cantidad" id="ecantidad" placeholder="Cantidad">
       </div>
     </div>
   </div>
@@ -232,12 +237,15 @@ import VuePaginate from 'vue-paginate';
         data(){
             return {
                 alimento: {},
+                ealimento:{},
                 datosAlimentos: {},
                 v_error: '',
                 lista_alimentos: {},
                 archivo:'',
+                earchiv:'',
                 editando_alimento: false,
                 paginate: ['vpalimentos'],
+                
             }
         },
         methods: {
@@ -245,11 +253,26 @@ import VuePaginate from 'vue-paginate';
             this.archivo = e.target.files[0]
 
           },
+          geteArchivo(e){
+            this.archivo = e.target.files[0]
+
+          },
+
             guardarAlimento(){
 
               if(this.editando_alimento){
 
-                axios.post('/editar_alimento', this.datosAlimentos)
+                const edatosAlimentos = new FormData
+
+                edatosAlimentos.set('id',this.alimento.id)
+                edatosAlimentos.set('nombre_a',this.alimento.nombre_a)
+                edatosAlimentos.set('descripcion',this.alimento.descripcion)
+                edatosAlimentos.set('precio',this.alimento.precio)
+                edatosAlimentos.set('tipo',this.alimento.tipo)
+                edatosAlimentos.set('cantidad',this.alimento.cantidad)
+                edatosAlimentos.set('archivo',this.archivo)
+
+                axios.get('/editar_alimento'+ this.alimento.id, edatosAlimentos)
                     .then((response) => {
                         console.log("OK")
                         this.alimento = {}

@@ -29,7 +29,7 @@ public function editar(Request $request){
     $clientes->cp = $request->cp;
     $clientes->teléfono = $request->teléfono;
 
-    $clientes->save();
+    $clientes->update();
 
 }
 
@@ -55,7 +55,7 @@ public function guardar(Request $request){
     ];
 
     $detalle_mensaje= [
-        'nombre.required' => 'El campo nombre es requerido',
+        'nombre.required' => 'El campo nombre es requerido ',
         'apellido_paterno.required' => 'El campo Apellido Paterno es requerido',
         'apellido_materno.required' => 'El campo Apellido Materno es requerido',
         'correo.required' => 'El campo Correo Electronico es requerido',

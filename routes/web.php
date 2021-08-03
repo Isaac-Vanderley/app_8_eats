@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\pagotarjetaopen;
+use App\Http\Controllers\ReportesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 
@@ -41,15 +42,22 @@ Route::get('/eliminar_alimento/{id_alimento}',[App\Http\Controllers\alimentosCon
 Route::get('/descargar_archivo/{id_alimento}',[App\Http\Controllers\alimentosController::class,'verArchivo'])->name('n.verarchivo.alimento');
 
 /*Clientes*/ 
-Route::get('/clientes', [App\Http\Controllers\clientesController::class, 'vista'])->name('n.clientes');
+Route::get('/clientes', [App\Http\Controllers\clientesController::class, 'vista'])->name('n.clientes')->middleware('valRol:admin');
 Route::post('/guardar_cliente',[App\Http\Controllers\clientesController::class,'guardar']);
 Route::get('/lista_clientes',[App\Http\Controllers\clientesController::class,'listar']);
 Route::post('/editar_cliente',[App\Http\Controllers\clientesController::class,'editar']);
 Route::get('/eliminar_cliente/{id_cliente}',[App\Http\Controllers\clientesController::class,'eliminar']);
 
 
+Route::get('/empleados',[App\Http\Controllers\empleadosController::class,'vista'])->name('n.empleados');
+Route::post('/ver_empleado',[App\Http\Controllers\empleadosController::class,'empleados']);
+
+
 
 Route::get('/aviso', [App\Http\Controllers\avisoPrivacidad::class, 'vista'])->name('aviso');
+Route::get('/reporte', [ReportesController::class,'ejecutarReporteNegocios']);
+Route::get('/generarreporte', [ReportesController::class,'compilarReporteNegocios']);
+
 
 
 Route::get('/log', function(){

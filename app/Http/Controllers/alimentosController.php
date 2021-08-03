@@ -19,15 +19,15 @@ class alimentosController extends Controller
     public function editar(Request $request){
         $alimento = Alimentos::find($request->id);
 
+        
         $alimento->nombre_a    = $request->nombre_a;
         $alimento->descripcion = $request->descripcion;
         $alimento->precio      = $request->precio;
         $alimento->tipo        = $request->tipo;
         $alimento->cantidad    = $request->cantidad;
-
+       
             $alimento->ruta_archivo= $request->file('archivo')->store('alimentos','public');
        
-
         $alimento->save();
     }
     public function eliminar($id_alimento){
